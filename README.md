@@ -1,2 +1,2 @@
 # densecrf_np
-Numpy/Python implementation of DenseCRF
+Numpy/Python implementation of DenseCRF.
