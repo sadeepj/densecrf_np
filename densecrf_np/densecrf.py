@@ -23,17 +23,20 @@ SOFTWARE.
 """
 
 from densecrf_np.pairwise import SpatialPairwise, BilateralPairwise
+from densecrf_np.params import DenseCRFParams
 from densecrf_np.util import softmax
 
 
 class DenseCRF(object):
 
-    def __init__(self, image, spatial_weight=3, bilateral_weight=10):
-        self.sp = SpatialPairwise(image, 3, 3)
-        self.bp = BilateralPairwise(image, 80, 80, 13, 13, 13)
+    def __init__(self, image, params: DenseCRFParams):
+        alpha, beta, gamma = params.alpha, params.beta, params.gamma
 
-        self.spatial_weight = spatial_weight
-        self.bilateral_weight = bilateral_weight
+        self.sp = SpatialPairwise(image, gamma, gamma)
+        self.bp = BilateralPairwise(image, alpha, alpha, beta, beta, beta)
+
+        self.spatial_weight = params.spatial_ker_weight
+        self.bilateral_weight = params.bilateral_ker_weight
 
     def infer(self, unary_logits, num_iterations=5):
         q = softmax(unary_logits)
