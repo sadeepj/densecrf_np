@@ -3,6 +3,7 @@ from PIL import Image
 
 from densecrf_np import util
 from densecrf_np.densecrf import DenseCRF
+from densecrf_np.params import DenseCRFParams
 
 image_source = 'example/image.jpg'
 # These unaries were obtained by running the FCN part of the model https://github.com/sadeepj/crfasrnn_keras
@@ -13,7 +14,8 @@ logits = np.load(unary_logits_source)
 before_crf_labels = util.get_label_image(logits)
 
 img = np.array(Image.open(image_source))
-crf = DenseCRF(img, spatial_weight=1.5, bilateral_weight=5.0)
+params = DenseCRFParams(spatial_ker_weight=1.5, bilateral_ker_weight=5.0)
+crf = DenseCRF(img, params)
 probs = crf.infer(logits, 5)
 
 # Labels after the CRF
